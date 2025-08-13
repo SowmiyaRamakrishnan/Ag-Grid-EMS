@@ -3,7 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import "./app.css";
+import "./App.css";
 
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 ModuleRegistry.registerModules([AllCommunityModule]);
