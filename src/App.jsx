@@ -76,11 +76,22 @@ export default function App() {
   const defaultColDef = { resizable: true, flex: 1 };
 
   // search (quick filter)
-  const onSearch = (e) => {
-    if (gridRef.current) {
-      gridRef.current.api.setGridOption('quickFilterText', e.target.value.trim());
-    }
-  };
+  // const onSearch = (e) => {
+  //   if (gridRef.current) {
+  //     gridRef.current.api.setGridOption('quickFilterText', e.target.value.trim());
+  //   }
+  // };
+
+
+  // search (custom filter)
+   const [searchText, setSearchText] = useState("");
+   const filteredData = useMemo(() => {
+    if (!searchText) return rowData;
+    return rowData.filter(row =>
+      row.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      row.age.toString().includes(searchText.toLowerCase())
+    );
+  }, [searchText, rowData]);
 
   // add row
   const addRow = () => {
@@ -124,7 +135,13 @@ export default function App() {
       <h2>Employee Details</h2>
 
       <div className="controls">
-        <input type="search" placeholder="Search..." onChange={onSearch} />
+        {/* <input type="search" placeholder="Search..." onChange={onSearch} /> */}
+        <input
+        type="search"
+        placeholder="Search..."
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value.trim())}
+      />
         <button onClick={addRow} style={{ backgroundColor: "rgb(66, 225, 66)" }}>
           Add
         </button>
@@ -145,7 +162,8 @@ export default function App() {
       <div className="ag-theme-alpine">
         <AgGridReact
           ref={gridRef} // direct reference for grid api obj
-          rowData={rowData}
+          //rowData={rowData}
+          rowData={filteredData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           rowSelection="multiple"
